@@ -6,13 +6,6 @@ function HumansInfo() {
   const month = useRef();
   const year = useRef();
 
-  const [aaassss, setaaassss] = useState();
-
-  const aaasss = (e) => {
-    e.preventDefault();
-    setaaassss(e.target.value);
-  };
-  console.log(aaassss);
   const [humanDate, setHumanDate] = useState();
   const [humanMonth, setHumanMonth] = useState();
   const [humanYear, setHumanYear] = useState();
@@ -20,13 +13,21 @@ function HumansInfo() {
   const [hozirgiNewYil, setHozirgiNewYil] = useState();
   const [hozirgiNewKun, setHozirgiNewKun] = useState();
   const [hozirgiNewOy, setHozirgiNewOy] = useState();
+
+  const [humanDateAg, setHumanDateAg] = useState();
+  const [humanMonthAg, setHumanMonthAg] = useState();
+  const [humanYearAg, setHumanYearAg] = useState();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setHumanDate("");
+    setHumanMonth("");
+    setHumanYear("");
 
     const humanNewDate = {
-      day: day.current.value,
-      month: month.current.value,
-      year: year.current.value,
+      day: +day.current.value,
+      month: +month.current.value,
+      year: +year.current.value,
     };
     setHumanDate(humanNewDate && humanNewDate.day);
     setHumanMonth(humanNewDate && humanNewDate.month);
@@ -41,152 +42,96 @@ function HumansInfo() {
     const hozirgiYil = date.getFullYear();
     const hozirgiKun = date.getDate();
     const hozirgiOy = date.getMonth() + 1;
-    if (
-      (hozirgiYil % 4 === 0 && hozirgiYil % 100 !== 0) ||
-      hozirgiYil % 400 === 0
-    ) {
-      if (hozirgiOy === 1) {
-        setHozirgiNewOy(31);
+    if (hozirgiYil >= humanYear) {
+      if (hozirgiOy > humanMonth) {
+        if (hozirgiKun > humanDate) {
+          setHumanYearAg(hozirgiYil - humanYear);
+          setHumanMonthAg(hozirgiOy - humanMonth);
+          setHumanDateAg(hozirgiKun - humanDate);
+        } else {
+          setHumanYearAg(hozirgiYil - humanYear);
+          setHumanMonthAg(hozirgiOy - humanMonth - 1);
+          setHumanDateAg(hozirgiKun - humanDate + 30);
+        }
+      } else if (hozirgiOy <= humanMonth) {
+        setHumanYearAg(hozirgiYil - humanYear - 1);
+        setHumanMonthAg(hozirgiOy - humanMonth + 12);
+        if (hozirgiKun > humanDate) {
+          setHumanDateAg(hozirgiKun - humanDate);
+        } else {
+          setHumanMonthAg(hozirgiOy - humanMonth - 1);
+          setHumanDateAg(hozirgiKun - humanDate + 30);
+        }
       }
-      if (hozirgiOy === 2) {
-        setHozirgiNewOy(29);
-      }
-      if (hozirgiOy === 3) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 4) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 5) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 6) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 7) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 8) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 9) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 10) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 11) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 12) {
-        setHozirgiNewOy(31);
-      }
-      console.log("kabisa");
     } else {
-      if (hozirgiOy === 1) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 2) {
-        setHozirgiNewOy(29);
-      }
-      if (hozirgiOy === 3) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 4) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 5) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 6) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 7) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 8) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 9) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 10) {
-        setHozirgiNewOy(31);
-      }
-      if (hozirgiOy === 11) {
-        setHozirgiNewOy(30);
-      }
-      if (hozirgiOy === 12) {
-        setHozirgiNewOy(31);
-      }
-      setHozirgiNewKun(hozirgiKun);
-      setHozirgiNewYil(hozirgiYil * 365);
+      console.log(`${humanYear} Bu yil hali kelmagan`);
     }
-    stop;
+
+    // if (
+    //   (hozirgiYil % 4 === 0 && hozirgiYil % 100 !== 0) ||
+    //   hozirgiYil % 400 === 0
+    // ) {
+    //   setHozirgiNewKun(hozirgiKun);
+    //   setHozirgiNewOy(hozirgiOy);
+    //   setHozirgiNewYil(hozirgiYil);
+    // } else {
+    //   setHozirgiNewKun(hozirgiKun);
+    //   setHozirgiNewOy(hozirgiOy);
+    //   setHozirgiNewYil(hozirgiYil);
+    // }
+
+    // if (
+    //   (humanYear % 4 === 0 && humanYear % 100 !== 0) ||
+    //   humanYear % 400 === 0
+    // ) {
+    //   setHozirgiNewKun(hozirgiKun);
+    //   setHozirgiNewOy(hozirgiOy);
+    //   setHumanYear(humanYear);
+    // } else {
+    //   setHozirgiNewKun(hozirgiKun);
+    //   setHozirgiNewOy(hozirgiOy);
+    //   setHozirgiNewYil(hozirgiYil);
+    // }
 
     // Foydalanuvchi
-    if (
-      (humanYear % 4 === 0 && humanYear % 100 !== 0) ||
-      humanYear % 400 === 0
-    ) {
-      if (humanMonth === 1) {
-        setHumanMonth(31);
-      } else if (humanMonth === 2) {
-        setHumanMonth(29);
-      } else if (humanMonth === 3) {
-        setHumanMonth(31);
-      } else if (humanMonth === 4) {
-        setHumanMonth(30);
-      } else if (humanMonth === 5) {
-        setHumanMonth(31);
-      } else if (humanMonth === 6) {
-        setHumanMonth(30);
-      } else if (humanMonth === 7) {
-        setHumanMonth(31);
-      } else if (humanMonth === 8) {
-        setHumanMonth(31);
-      } else if (humanMonth === 9) {
-        setHumanMonth(30);
-      } else if (humanMonth === 10) {
-        setHumanMonth(31);
-      } else if (humanMonth === 11) {
-        setHumanMonth(30);
-      } else if (humanMonth === 12) {
-        setHumanMonth(31);
-      }
-      console.log("kabisa");
-    } else {
-      if (humanMonth === 1) {
-        setHumanMonth(31);
-      } else if (humanMonth === 2) {
-        setHumanMonth(29);
-      } else if (humanMonth === 3) {
-        setHumanMonth(31);
-      } else if (humanMonth === 4) {
-        setHumanMonth(30);
-      } else if (humanMonth === 5) {
-        setHumanMonth(31);
-      } else if (humanMonth === 6) {
-        setHumanMonth(30);
-      } else if (humanMonth === 7) {
-        setHumanMonth(31);
-      } else if (humanMonth === 8) {
-        setHumanMonth(31);
-      } else if (humanMonth === 9) {
-        setHumanMonth(30);
-      } else if (humanMonth === 10) {
-        setHumanMonth(31);
-      } else if (humanMonth === 11) {
-        setHumanMonth(30);
-      } else if (humanMonth === 12) {
-        setHumanMonth(31);
-      }
-      setHumanDate(humanDate);
-      setHumanYear(humanYear * 365);
-    }
-  }, [humanDate, humanMonth, humanYear, aaassss]);
-  console.log(hozirgiNewYil, hozirgiNewOy, hozirgiNewKun);
-  console.log(humanYear, humanMonth, humanDate);
+
+    // if (
+    //   (humanYear % 4 === 0 && humanYear % 100 !== 0) ||
+    //   humanYear % 400 === 0
+    // ) {
+    //   if (humanMonth >= hozirgiNewOy) {
+    //     setHumanDateAg(humanDate);
+    //     setHumanMonthAg(humanMonth + 12 - humanMonth);
+    //     setHumanYearAg(humanYear + 1);
+    //     console.log(humanYear);
+    //   } else {
+    //   }
+    // } else if (humanMonth < hozirgiNewOy) {
+    //   setHumanYearAg(humanYear);
+    //   setHumanMonthAg(humanMonth);
+    //   if (humanDate >= hozirgiNewKun) {
+    //     setHumanDateAg(humanDate + 30);
+    //   } else {
+    //     setHumanDateAg(humanDate);
+    //   }
+    // } else {
+    //   setHumanYear(humanYear);
+    //   if (humanDate >= hozirgiNewKun) {
+    //     setHumanDateAg(humanDate + 30);
+    //     setHumanMonthAg(humanMonth - 1);
+    //   } else {
+    //     setHumanMonthAg(humanMonth);
+    //     setHumanDateAg(humanDate);
+    //   }
+    // }
+    // if (hozirgiNewYil >= humanYearAg) {
+    //   console.log(humanYear);
+    //   setHumanYearAg(hozirgiNewYil - humanYearAg);
+    // } else {
+    //   console.log(`${humanYearAg} Bu yil hali kelmagan`);
+    // }
+  }, [humanDate]);
+  console.log(humanYearAg);
   return (
     <>
       <form className="forma" onSubmit={(e) => handleSubmit(e)}>
@@ -232,24 +177,24 @@ function HumansInfo() {
 
       <div className="humanyearsold">
         <span className="malumot">
-          {humanYear ? (
-            <p className="humanyearsolt-p">{humanYear}</p>
+          {humanYearAg ? (
+            <p className="humanyearsolt-p">{humanYearAg}</p>
           ) : (
             <p className="humanyearsolt-p">--</p>
           )}
           <p>years</p>
         </span>
         <span className="malumot">
-          {humanMonth ? (
-            <p className="humanyearsolt-p">{humanMonth}</p>
+          {humanMonthAg ? (
+            <p className="humanyearsolt-p">{humanMonthAg}</p>
           ) : (
             <p className="humanyearsolt-p">--</p>
           )}
           <p>months</p>
         </span>
         <span className="malumot">
-          {humanDate ? (
-            <p className="humanyearsolt-p">{humanDate}</p>
+          {humanDateAg ? (
+            <p className="humanyearsolt-p">{humanDateAg}</p>
           ) : (
             <p className="humanyearsolt-p">--</p>
           )}
